@@ -22,15 +22,8 @@ auth_url = server + api_auth_path
 
 r = requests.post(auth_url, auth=requests.auth.HTTPBasicAuth(username,password), verify=False)
 
-#print ("***** Printing Header Information ****")
-#print ("X-auth-access-token: "+r.headers["X-auth-access-token"])
-#print ("DOMAIN_UUIS: "+r.headers["DOMAIN_UUID"])
-#print ("X-auth-refresh-token: "+r.headers["X-auth-refresh-token"])
-
 domainuuid = r.headers["DOMAIN_UUID"]
-#apiurl = "/api/fmc_config/v1/domain/"+domainuuid+"/object/fqdns" 
-#apiurl = "/api/fmc_config/v1/domain/"+domainuuid+"/object/networks"
-apiurl = "/api/fmc_config/v1/domain/"+domainuuid+"/object/hosts?expanded=true" 
+apiurl = "/api/fmc_config/v1/domain/"+domainuuid+"/object/hosts?limit=10000&expanded=true" 
 url = server + apiurl
 headers =   {"Content-Type": "application/json",
              "X-auth-access-token":  r.headers["X-auth-access-token"]
@@ -42,15 +35,14 @@ json_data = json.loads(x.text)
 
 t = PrettyTable()
 
-t.field_names = ["Name", "Type", "Value", "Description"]
+t.field_names = ["Name", "Type", "Value", "Description", "ID"]
 
 
 for i in range(len(json_data["items"])):
 	t.add_row([json_data["items"][i]["name"], 
 	json_data["items"][i]["type"], 
 	json_data["items"][i]["value"], 
-	json_data["items"][i]["description"]])          
-            # print (json_data["items"][i]["name"])
-            # print (json_data["items"][i]["type"])
+	json_data["items"][i]["description"],          
+        json_data["items"][i]["id"]])
 
 print (t)
