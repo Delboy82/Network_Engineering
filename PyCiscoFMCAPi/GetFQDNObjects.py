@@ -28,7 +28,7 @@ r = requests.post(auth_url, auth=requests.auth.HTTPBasicAuth(username,password),
 #print ("X-auth-refresh-token: "+r.headers["X-auth-refresh-token"])
 
 domainuuid = r.headers["DOMAIN_UUID"]
-apiurl = "/api/fmc_config/v1/domain/"+domainuuid+"/object/fqdns?expanded=true" 
+apiurl = "/api/fmc_config/v1/domain/"+domainuuid+"/object/fqdns?limit=10000&expanded=true" 
 url = server + apiurl
 headers =   {"Content-Type": "application/json",
              "X-auth-access-token":  r.headers["X-auth-access-token"]
