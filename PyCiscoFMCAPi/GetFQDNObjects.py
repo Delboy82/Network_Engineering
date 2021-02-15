@@ -2,11 +2,14 @@
 
 import requests
 import json
+import banner
 from prettytable import PrettyTable
 from getpass import getpass 
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
+
+banner.main_banner()
 
 ipaddr = input("Enter FMC IP address: ")
 username = input("Enter FMC Username: ")
