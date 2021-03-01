@@ -2,6 +2,10 @@ from prettytable import PrettyTable
 import requests
 import json
 import ipaddress
+import urllib3
+urllib3.disable_warnings()
+
+
 
 url = "https://ip-ranges.amazonaws.com/ip-ranges.json"
 
@@ -55,18 +59,23 @@ def ListAWSIPranges():
 	return (json_data, serv, regi)
 
 def ASA_Config_Generator(ipprefix):
-	
-	with open("ASA_CONFIG.txt", 'a') as outputfile:
+	print ("\n\n")
+	file = input ("Enter filename to save ASA Config: ")
+	with open(file, 'a') as outputfile:
 		for item in ipprefix[0]["prefixes"]:
 			if item["service"] == ipprefix[1] and item["region"] == ipprefix[2]:
 				addr = ipaddress.ip_network(item["ip_prefix"])
-				outputfile.write ("Object network "+ipprefix[1]+"_"+str(addr.network_address))
+				outputfile.write ("Object network "+"Ext_"+ipprefix[1]+"_"+str(addr.network_address)+"_"+str(addr.prefixlen))
 				outputfile.write ("\n\tsubnet "+str(addr.network_address)+" "+str(addr.netmask))
 				outputfile.write ("\n\tdescription "+ipprefix[1]+" "+ipprefix[2])
 				outputfile.write ("\n\n")
 
+
+print ("\n\n\n***** AWS Services *****\n")
 ListAWSServices()
-ListAWSRegions() 
+print ("\n\n\n***** AWS Regions *****\n")
+ListAWSRegions()
+print ("\n\n") 
 ipprefix = ListAWSIPranges()
 ASA_Config_Generator(ipprefix)
 
