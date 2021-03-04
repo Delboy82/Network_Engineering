@@ -12,7 +12,7 @@ def SwitchModel():
 		for entry in menu: 
 			print (entry, menu[entry])
 		
-		selection=input("Please Select Model:")
+		selection=input("Please Select Model (any key to quite): ")
 		if selection =='1':
 			print ("Building Cisco 9200 Series Configs from CSV")
 			TemplateFile = "9200_config.j2"
@@ -23,12 +23,14 @@ def SwitchModel():
 			ConfigGenerator(TemplateFile)
 		else:
 			print ("Unknown Option Selected!")
-		#break 	
+			break 	
 
 
 
 def ConfigGenerator(TemplateFile):
-	with open("data.csv", "r") as file:
+
+	filename = input("""Please enter input file "name.csv": """)
+	with open(filename, "r") as file:
 		csvfile = csv.reader(file)
 		next(csvfile, None)
 		for row in csvfile:
